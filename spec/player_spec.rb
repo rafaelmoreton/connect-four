@@ -2,6 +2,7 @@
 
 require_relative '../lib/player'
 
+# rubocop:disable Metrics/BlockLength
 describe Player do
   subject(:player) { described_class.new }
 
@@ -24,7 +25,7 @@ describe Player do
         valid_input = 'Rufus'
         allow(player).to receive(:gets).and_return(invalid_input, valid_input)
       end
-      it "repeats the loop twice" do
+      it 'repeats the loop twice' do
         expect(player).to receive(:puts).twice
         player.set_name
       end
@@ -65,3 +66,4 @@ describe Player do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -2,6 +2,7 @@
 
 require_relative 'display'
 
+# Used to get players's inputs for Board#drop_piece
 class Player
   include Display
   attr_reader :name
@@ -10,11 +11,9 @@ class Player
     puts display_name_prompt(1)
     loop do
       player_input = gets.chomp
-      unless player_input.empty?
-        return @name = player_input
-      else
-        puts display_name_warn(1)
-      end
+      return @name = player_input unless player_input.empty?
+
+      puts display_name_warn(1)
     end
   end
 
@@ -22,11 +21,9 @@ class Player
     puts display_turn_prompt(1)
     loop do
       player_input = gets.chomp.to_i
-      if player_input >= 1 && player_input <= 7
-        return player_input
-      else
-        puts display_turn_warn(1)
-      end
+      return player_input if player_input >= 1 && player_input <= 7
+
+      puts display_turn_warn(1)
     end
   end
 end
