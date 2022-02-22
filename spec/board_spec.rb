@@ -246,5 +246,37 @@ describe Board do
       end
     end
   end
+
+  describe '#show' do
+    context 'at game start' do
+      it 'outputs the empty board to the terminal console' do
+        empty_board = <<~BOARD
+          □|□|□|□|□|□|□
+          □|□|□|□|□|□|□
+          □|□|□|□|□|□|□
+          □|□|□|□|□|□|□
+          □|□|□|□|□|□|□
+          □|□|□|□|□|□|□
+        BOARD
+        expect { board.show }.to output(empty_board).to_stdout
+      end
+    end
+
+    context 'when some plays have been made' do
+      it 'outputs the board showing those plays' do
+        played_board = <<~BOARD
+          □|□|□|□|□|□|□
+          □|□|□|□|□|□|□
+          □|□|□|□|□|□|□
+          □|□|□|o|□|□|□
+          □|□|□|o|□|□|□
+          □|□|□|o|□|□|x
+        BOARD
+        board.drop_piece(7, 'x')
+        3.times { board.drop_piece(4, 'o') }
+        expect { board.show }.to output(played_board).to_stdout
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

@@ -100,4 +100,21 @@ class Board
     4.times { |i| column << @slots[@last_play + (i * 7)] }
     column.uniq.length == 1
   end
+
+  def show
+    text_array = @slots.map.with_index do |slot, i|
+      slot = "\u25a1" if slot.instance_of?(Integer)
+      if i.zero?
+        slot
+      elsif (i % 7).zero?
+        "\n#{slot}"
+      else
+        "|#{slot}"
+      end
+    end
+    puts text_array.join
+  end
 end
+
+# "\033[35m\u25a0\033[0m" magenta piece
+# "\033[36m\u25a0\033[0m" cyan piece

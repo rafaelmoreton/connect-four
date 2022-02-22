@@ -4,7 +4,7 @@ require_relative '../lib/player'
 
 # rubocop:disable Metrics/BlockLength
 describe Player do
-  subject(:player) { described_class.new }
+  subject(:player) { described_class.new('x') }
 
   describe '#set_name' do
     context 'when a player inputs a non-empty string' do

@@ -5,7 +5,11 @@ require_relative 'display'
 # Used to get players's inputs for Board#drop_piece
 class Player
   include Display
-  attr_reader :name
+  attr_reader :name, :piece
+
+  def initialize(piece)
+    @piece = piece
+  end
 
   def set_name
     puts display_name_prompt(1)
