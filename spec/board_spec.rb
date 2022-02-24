@@ -251,6 +251,8 @@ describe Board do
     context 'at game start' do
       it 'outputs the empty board to the terminal console' do
         empty_board = <<~BOARD
+
+          1|2|3|4|5|6|7
           □|□|□|□|□|□|□
           □|□|□|□|□|□|□
           □|□|□|□|□|□|□
@@ -265,6 +267,8 @@ describe Board do
     context 'when some plays have been made' do
       it 'outputs the board showing those plays' do
         played_board = <<~BOARD
+
+          1|2|3|4|5|6|7
           □|□|□|□|□|□|□
           □|□|□|□|□|□|□
           □|□|□|□|□|□|□

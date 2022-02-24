@@ -112,7 +112,9 @@ class Board
         "|#{slot}"
       end
     end
-    puts text_array.join
+    index = ["1|2|3|4|5|6|7\n"]
+    text_array_with_index = index + text_array
+    puts "\n#{text_array_with_index.join}"
   end
 end
 
