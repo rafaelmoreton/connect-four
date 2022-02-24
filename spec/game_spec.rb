@@ -4,6 +4,7 @@ require_relative '../lib/game'
 require_relative '../lib/player'
 require_relative '../lib/board'
 
+# rubocop:disable Metrics/BlockLength
 describe Game do
   subject(:game) { described_class.new }
 
@@ -48,7 +49,7 @@ describe Game do
     end
 
     context "when player inputs '5'" do
-      let(:player) { instance_double(Player, piece: 'x', turn_input: 5) }
+      let(:player) { instance_double(Player, name: 'Rufus', piece: 'x', turn_input: 5) }
       it 'sends message #drop_piece with argument 5 to the @board' do
         game.instance_variable_set(:@active_player, player)
         board = game.instance_variable_get(:@board)
@@ -58,4 +59,28 @@ describe Game do
       end
     end
   end
+
+  describe '#loop_turns' do
+    it 'sends #game_over? to the board instance' do
+      board = game.instance_variable_get(:@board)
+      allow(game).to receive(:player_turn)
+      allow(board).to receive(:game_over?).and_return(true)
+
+      expect(board).to receive(:game_over?)
+      game.loop_turns
+    end
+  end
+
+  context 'if it takes 7 turns for a line of 4 to be made' do
+    it 'game instance receives #player_turn 7 times before the loop exits' do
+      allow(game.p1).to receive(:turn_input).and_return(2)
+      allow(game.p2).to receive(:turn_input).and_return(5)
+      allow(game).to receive(:puts)
+      allow(game.instance_variable_get(:@board)).to receive(:puts)
+
+      expect(game).to receive(:player_turn).and_call_original.exactly(7).times
+      game.loop_turns
+    end
+  end
 end
+# rubocop:enable Metrics/BlockLength

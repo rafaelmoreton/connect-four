@@ -15,6 +15,13 @@ class Game
     @active_player = nil
   end
 
+  def play
+    # display_intro
+    new_players
+    loop_turns
+    # result
+  end
+
   def new_players
     @p1.set_name
     @p2.set_name
@@ -32,5 +39,15 @@ class Game
   def player_turn
     target = @active_player.turn_input
     @board.drop_piece(target, @active_player.piece)
+  end
+
+  def loop_turns
+    loop do
+      return if @board.game_over?
+
+      @board.show
+      next_player
+      player_turn
+    end
   end
 end
