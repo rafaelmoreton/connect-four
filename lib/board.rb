@@ -30,67 +30,64 @@ class Board
   end
 
   # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Style/EmptyElse
   def row_win?
     return false if defined?(@last_play).nil?
 
-    right_row = []
-    4.times do |i|
-      right_row << @slots[@last_play + i]
+    count_up = []
+    i = 0
+    until @slots[@last_play + i] != @slots[@last_play]
+      count_up << @slots[@last_play + i]
+      i += 1
     end
+    count_down = []
+    i = 1 # So that it doesn't start counting from 0 and include itself again
+    until @slots[@last_play - i] != @slots[@last_play]
+      count_down << @slots[@last_play - i] if (@last_play - i).positive?
+      i += 1
+    end
+    max_line = count_up + count_down
+    return true if max_line.length >= 4
 
-    left_row = []
-    4.times do |i|
-      left_row <<
-        if (@last_play - i).positive?
-          @slots[@last_play - i]
-        else
-          nil
-        end
-    end
-
-    [right_row, left_row].any? do |winning_array|
-      winning_array.uniq.length == 1
-    end
+    false
   end
 
   def diagonal_win?
     return false if defined?(@last_play).nil?
 
-    up_right_diagonal = []
-    4.times do |i|
-      up_right_diagonal <<
-        if (@last_play - (i * 6)).positive?
-          @slots[@last_play - (i * 6)]
-        else
-          nil
-        end
+    count_up_right = []
+    i = 0
+    until @slots[@last_play - (i * 6)] != @slots[@last_play]
+      count_up_right << @slots[@last_play - (i * 6)] if (@last_play - (i * 6))
+                                                        .positive?
+      i += 1
     end
-
-    up_left_diagonal = []
-    4.times do |i|
-      up_left_diagonal <<
-        if (@last_play - (i * 8)).positive?
-          @slots[@last_play - (i * 8)]
-        else
-          nil
-        end
+    count_down_left = []
+    i = 1
+    until @slots[@last_play + (i * 6)] != @slots[@last_play]
+      count_down_left << @slots[@last_play + (i * 6)]
+      i += 1
     end
+    max_line_a = count_up_right + count_down_left
+    return true if max_line_a.length >= 4
 
-    down_right_diagonal = []
-    4.times do |i|
-      down_right_diagonal << @slots[@last_play + (i * 8)]
+    count_up_left = []
+    i = 0
+    until @slots[@last_play - (i * 8)] != @slots[@last_play]
+      count_up_left << @slots[@last_play - (i * 8)] if (@last_play - (i * 8))
+                                                       .positive?
+      i += 1
     end
-
-    down_left_diagonal = []
-    4.times do |i|
-      down_left_diagonal << @slots[@last_play + (i * 6)]
+    count_down_right = []
+    i = 1
+    until @slots[@last_play + (i * 8)] != @slots[@last_play]
+      count_down_right << @slots[@last_play + (i * 8)]
+      i += 1
     end
+    max_line_b = count_up_left + count_down_right
+    return true if max_line_b.length >= 4
 
-    [up_right_diagonal, up_left_diagonal, up_right_diagonal, up_left_diagonal]
-      .any? { |winning_array| winning_array.uniq.length == 1 }
+    false
   end
-  # rubocop:enable Style/EmptyElse
   # rubocop:enable Metrics/MethodLength
 
   def column_win?

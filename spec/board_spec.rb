@@ -89,6 +89,17 @@ describe Board do
       end
     end
 
+    context "when a 3-pieces-line at the end of the board could include a nil
+    value in it's count, leading to false victory" do
+      it 'returns false' do
+        board.drop_piece(5, 'x')
+        board.drop_piece(6, 'x')
+        board.drop_piece(7, 'x')
+        result = board.row_win?
+        expect(result).to be false
+      end
+    end
+
     context 'when the ends of @slots could wrap, leading to false victory' do
       it 'returns false' do
         board.drop_piece(5, 'x')
@@ -107,6 +118,18 @@ describe Board do
         board.drop_piece(3, 'x')
         board.drop_piece(4, 'x')
         board.drop_piece(5, 'x')
+        result = board.row_win?
+        expect(result).to be true
+      end
+    end
+
+    context 'if the winning last play completes a 4-pieces-line by filling a
+    gap betwen other pieces' do
+      it 'returns true' do
+        board.drop_piece(1, 'x')
+        board.drop_piece(2, 'x')
+        board.drop_piece(4, 'x')
+        board.drop_piece(3, 'x')
         result = board.row_win?
         expect(result).to be true
       end
@@ -244,6 +267,36 @@ describe Board do
         result = board.diagonal_win?
         expect(result).to be true
       end
+    end
+
+    context 'if the winning last play completes a 4-pieces-line by filling a
+    gap betwen other pieces' do
+      it 'returns true' do
+        board.drop_piece(2, 'o')
+        2.times { board.drop_piece(3, 'o') }
+        3.times { board.drop_piece(4, 'o') }
+        board.drop_piece(1, 'x')
+        board.drop_piece(2, 'x')
+        board.drop_piece(4, 'x')
+        board.drop_piece(3, 'x')
+
+        result = board.diagonal_win?
+        expect(result).to be true
+      end
+    end
+  end
+
+  context "when a 3-pieces-line at the end of the board could include a nil
+  value in it's count, leading to false victory" do
+    it 'returns false' do
+      3.times { board.drop_piece(5, 'b') }
+      4.times { board.drop_piece(6, 'c') }
+      5.times { board.drop_piece(7, 'd') }
+      board.drop_piece(5, 'x')
+      board.drop_piece(6, 'x')
+      board.drop_piece(7, 'x')
+      result = board.diagonal_win?
+      expect(result).to be false
     end
   end
 
