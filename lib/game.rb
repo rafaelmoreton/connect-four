@@ -23,8 +23,8 @@ class Game
   end
 
   def new_players
-    @p1.set_name
-    @p2.set_name
+    @p1.set_name(1)
+    @p2.set_name(2)
   end
 
   def next_player

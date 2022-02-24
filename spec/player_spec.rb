@@ -14,7 +14,7 @@ describe Player do
         allow(player).to receive(:puts)
       end
       it "sets the player's name attribute" do
-        player.set_name
+        player.set_name(1)
         expect(player.name).to eq 'Rufus'
       end
     end
@@ -27,7 +27,7 @@ describe Player do
       end
       it 'repeats the loop twice' do
         expect(player).to receive(:puts).twice
-        player.set_name
+        player.set_name(1)
       end
     end
   end
@@ -53,12 +53,13 @@ describe Player do
       valid_input = rand(1..7).to_s
       before do
         allow(player).to receive(:gets).and_return(invalid_input, valid_input)
-        allow(player).to receive(:puts)
+        allow($stdout).to receive(:puts)
       end
-      it 'repeats the loop twice' do
-        expect(player).to receive(:puts).twice
-        player.turn_input
+      it 'outputs the invalid input warning' do
+        warning = /#{invalid_input} isn't a valid input. Choose a column between 1 and 7.\n/
+        expect { player.turn_input }.to output(warning).to_stdout
       end
+
       it 'then returns the valid input' do
         result = player.turn_input
         expect(result).to eq(valid_input.to_i)

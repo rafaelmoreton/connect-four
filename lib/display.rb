@@ -6,9 +6,9 @@ module Display
   def display_name_prompt(player)
     case player
     when 1
-      "What's the first player's name?"
+      "\nWhat's the first player's name?"
     when 2
-      "What's the second player's name?"
+      "\nWhat's the second player's name?"
     end
   end
 
@@ -21,21 +21,13 @@ module Display
     end
   end
 
-  def display_turn_prompt(player)
-    case player
-    when 1
-      "It's #{player}'s turn"
-    when 2
-      "It's #{player}'s turn"
-    end
+  def display_turn_prompt(player_name)
+    "It's #{player_name}'s turn"
   end
 
-  def display_turn_warn(player)
-    case player
-    when 1
-      "It's #{player}'s turn"
-    when 2
-      "It's #{player}'s turn"
-    end
+  def display_turn_warn(invalid_input)
+    return 'Choose a column between 1 and 7.' if invalid_input.zero?
+
+    "#{invalid_input} isn't a valid input. Choose a column between 1 and 7."
   end
 end
