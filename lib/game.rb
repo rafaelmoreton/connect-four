@@ -28,6 +28,12 @@ class Game
   def new_players
     @p1.set_name(1)
     @p2.set_name(2)
+    colorfull_names
+  end
+
+  def colorfull_names
+    @p1.instance_variable_set(:@name, "\033[36m#{p1.name}\033[0m")
+    @p2.instance_variable_set(:@name, "\033[35m#{p2.name}\033[0m")
   end
 
   def next_player

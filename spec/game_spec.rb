@@ -9,14 +9,14 @@ describe Game do
   subject(:game) { described_class.new }
 
   describe '#new_players' do
-    it 'sets the new players (with their names) as game instance attributes' do
+    it 'sets the new players (with their names and colors) as game instance attributes' do
       allow(game.p1).to receive(:gets).and_return('Rufus')
       allow(game.p2).to receive(:gets).and_return('Fido')
       allow(game.p1).to receive(:puts)
       allow(game.p2).to receive(:puts)
       game.new_players
-      expect(game.p1.name).to eq('Rufus')
-      expect(game.p2.name).to eq('Fido')
+      expect(game.p1.name).to eq("\033[36mRufus\033[0m")
+      expect(game.p2.name).to eq("\033[35mFido\033[0m")
     end
   end
 
