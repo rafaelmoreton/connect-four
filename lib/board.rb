@@ -35,13 +35,15 @@ class Board
 
     count_up = []
     i = 0
-    until @slots[@last_play + i] != @slots[@last_play]
+    until @slots[@last_play + i] != @slots[@last_play] ||
+          ((@last_play + i) % 7).zero? # So that it doesn't wrap rows
       count_up << @slots[@last_play + i]
       i += 1
     end
     count_down = []
     i = 1 # So that it doesn't start counting from 0 and include itself again
-    until @slots[@last_play - i] != @slots[@last_play]
+    until @slots[@last_play - i] != @slots[@last_play] ||
+          (((@last_play - i) + 1) % 7).zero?
       count_down << @slots[@last_play - i] if (@last_play - i).positive?
       i += 1
     end
@@ -56,14 +58,16 @@ class Board
 
     count_up_right = []
     i = 0
-    until @slots[@last_play - (i * 6)] != @slots[@last_play]
+    until @slots[@last_play - (i * 6)] != @slots[@last_play] ||
+          ((@last_play - (i * 6)) % 7).zero?
       count_up_right << @slots[@last_play - (i * 6)] if (@last_play - (i * 6))
                                                         .positive?
       i += 1
     end
     count_down_left = []
     i = 1
-    until @slots[@last_play + (i * 6)] != @slots[@last_play]
+    until @slots[@last_play + (i * 6)] != @slots[@last_play] ||
+          (((@last_play + (i * 6)) + 1) % 7).zero?
       count_down_left << @slots[@last_play + (i * 6)]
       i += 1
     end
@@ -72,14 +76,16 @@ class Board
 
     count_up_left = []
     i = 0
-    until @slots[@last_play - (i * 8)] != @slots[@last_play]
+    until @slots[@last_play - (i * 8)] != @slots[@last_play] ||
+          (((@last_play - (i * 8)) + 1) % 7).zero?
       count_up_left << @slots[@last_play - (i * 8)] if (@last_play - (i * 8))
                                                        .positive?
       i += 1
     end
     count_down_right = []
     i = 1
-    until @slots[@last_play + (i * 8)] != @slots[@last_play]
+    until @slots[@last_play + (i * 8)] != @slots[@last_play] ||
+          ((@last_play + (i * 8)) % 7).zero?
       count_down_right << @slots[@last_play + (i * 8)]
       i += 1
     end
@@ -112,6 +118,12 @@ class Board
     index = ["1|2|3|4|5|6|7\n"]
     text_array_with_index = index + text_array
     puts "\n#{text_array_with_index.join}"
+  end
+
+  def full_board?
+    return true if @slots.uniq.length == 2
+
+    false
   end
 end
 

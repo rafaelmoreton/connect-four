@@ -112,12 +112,26 @@ describe Board do
       end
     end
 
+    context 'when following a row count from the position of last play would
+    wrap to another row inside board' do
+      it 'returns false' do
+        board.drop_piece(6, 'o')
+        board.drop_piece(7, 'o')
+        board.drop_piece(7, 'x')
+        board.drop_piece(3, 'x')
+        board.drop_piece(2, 'x')
+        board.drop_piece(1, 'x')
+        result = board.row_win?
+        expect(result).to be false
+      end
+    end
+
     context 'when a 4-pieces-line is formed in a row' do
       it 'returns true' do
-        board.drop_piece(2, 'x')
-        board.drop_piece(3, 'x')
         board.drop_piece(4, 'x')
         board.drop_piece(5, 'x')
+        board.drop_piece(6, 'x')
+        board.drop_piece(7, 'x')
         result = board.row_win?
         expect(result).to be true
       end
@@ -255,6 +269,23 @@ describe Board do
       end
     end
 
+    context 'when following a diagonal count from the position of last play
+    would wrap to another diagonal inside board' do
+      it 'returns false' do
+        board.drop_piece(1, 'x')
+        3.times { board.drop_piece(7, 'x') }
+        4.times { board.drop_piece(6, 'x') }
+
+        board.drop_piece(1, 'o')
+        board.drop_piece(2, 'o')
+        board.drop_piece(6, 'o')
+        board.drop_piece(7, 'o')
+
+        result = board.diagonal_win?
+        expect(result).to be false
+      end
+    end
+
     context 'when a 4-pieces-line is formed in a diagonal' do
       it 'returns true' do
         3.times { board.drop_piece(2, 'x') }
@@ -284,19 +315,19 @@ describe Board do
         expect(result).to be true
       end
     end
-  end
 
-  context "when a 3-pieces-line at the end of the board could include a nil
-  value in it's count, leading to false victory" do
-    it 'returns false' do
-      3.times { board.drop_piece(5, 'b') }
-      4.times { board.drop_piece(6, 'c') }
-      5.times { board.drop_piece(7, 'd') }
-      board.drop_piece(5, 'x')
-      board.drop_piece(6, 'x')
-      board.drop_piece(7, 'x')
-      result = board.diagonal_win?
-      expect(result).to be false
+    context "when a 3-pieces-line at the end of the board could include a nil
+    value in it's count, leading to false victory" do
+      it 'returns false' do
+        3.times { board.drop_piece(5, 'b') }
+        4.times { board.drop_piece(6, 'c') }
+        5.times { board.drop_piece(7, 'd') }
+        board.drop_piece(5, 'x')
+        board.drop_piece(6, 'x')
+        board.drop_piece(7, 'x')
+        result = board.diagonal_win?
+        expect(result).to be false
+      end
     end
   end
 
@@ -332,6 +363,38 @@ describe Board do
         board.drop_piece(7, 'x')
         3.times { board.drop_piece(4, 'o') }
         expect { board.show }.to output(played_board).to_stdout
+      end
+    end
+  end
+
+  describe '#full_board?' do
+    context 'when the board is not full' do
+      it 'returns false' do
+        expect(board.full_board?).to be false
+      end
+    end
+
+    context 'when some plays have been made' do
+      it 'returns false' do
+        board.drop_piece(7, 'x')
+        3.times { board.drop_piece(4, 'o') }
+
+        expect(board.full_board?).to be false
+      end
+    end
+
+    context 'when the board is full' do
+      it 'returns true' do
+        full_board = %w[
+          o o x o o x o
+          x x x o x o o
+          x o x o x x o
+          o x o x x o x
+          o x o x o o x
+          o o o x o o x
+        ]
+        board.instance_variable_set(:@slots, full_board)
+        expect(board.full_board?).to be true
       end
     end
   end
