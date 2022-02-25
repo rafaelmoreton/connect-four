@@ -90,7 +90,7 @@ describe Game do
         allow(game.p1).to receive(:name).and_return(name)
         game.instance_variable_set(:@active_player, game.p1)
         winner = game.active_player
-        win_announcement = "#{winner.name} won the match!\n"
+        win_announcement = "#{winner.name} won the match!\n\n"
 
         expect { game.result }.to output(win_announcement).to_stdout
       end

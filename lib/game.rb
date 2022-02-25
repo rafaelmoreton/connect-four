@@ -18,7 +18,7 @@ class Game
   end
 
   def play
-    # display_intro
+    display_intro
     new_players
     loop_turns
     @board.show

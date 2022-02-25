@@ -3,6 +3,17 @@
 # Used to store all the text used in the game, as well as some simple logic to
 # make some methods output slightly different texts depending on conditions.
 module Display
+  def display_intro
+    puts <<~INTRO
+      "This is a Connect-Four game. Each player will take turns dropping pieces
+      at the top of the board - indicated by the numbers 1 to 7. The pieces will
+      fall to the bottommost empty slot of that column.
+
+      The match ends when a player complete a straight unobstructed line with 4
+      pieces of the same color"
+    INTRO
+  end
+
   def display_name_prompt(player)
     case player
     when 1
@@ -33,6 +44,7 @@ module Display
 
   def display_win(winner)
     puts "#{winner.name} won the match!"
+    puts
   end
 
   def display_draw
