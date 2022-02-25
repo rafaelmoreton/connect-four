@@ -30,4 +30,12 @@ module Display
 
     "#{invalid_input} isn't a valid input. Choose a column between 1 and 7."
   end
+
+  def display_win(winner)
+    puts "#{winner.name} won the match!"
+  end
+
+  def display_draw
+    puts 'The board is full. This match has came to a draw'
+  end
 end

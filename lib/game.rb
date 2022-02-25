@@ -2,10 +2,12 @@
 
 require_relative 'player'
 require_relative 'board'
+require_relative 'display'
 
 # Used to set up and store the game elements as instance attributes and to
 # complete a whole match loop
 class Game
+  include Display
   attr_reader :p1, :p2, :active_player
 
   def initialize
@@ -19,7 +21,8 @@ class Game
     # display_intro
     new_players
     loop_turns
-    # result
+    @board.show
+    result
   end
 
   def new_players
@@ -44,10 +47,17 @@ class Game
   def loop_turns
     loop do
       return if @board.game_over?
+      return if @board.full_board?
 
       @board.show
       next_player
       player_turn
     end
+  end
+
+  def result
+    return display_draw if @board.full_board?
+
+    display_win(@active_player)
   end
 end

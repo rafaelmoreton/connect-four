@@ -69,17 +69,40 @@ describe Game do
       expect(board).to receive(:game_over?)
       game.loop_turns
     end
+
+    context 'if it takes 7 turns for a line of 4 to be made' do
+      it 'game instance receives #player_turn 7 times before the loop exits' do
+        allow(game.p1).to receive(:turn_input).and_return(2)
+        allow(game.p2).to receive(:turn_input).and_return(5)
+        allow(game).to receive(:puts)
+        allow(game.instance_variable_get(:@board)).to receive(:puts)
+
+        expect(game).to receive(:player_turn).and_call_original.exactly(7).times
+        game.loop_turns
+      end
+    end
   end
 
-  context 'if it takes 7 turns for a line of 4 to be made' do
-    it 'game instance receives #player_turn 7 times before the loop exits' do
-      allow(game.p1).to receive(:turn_input).and_return(2)
-      allow(game.p2).to receive(:turn_input).and_return(5)
-      allow(game).to receive(:puts)
-      allow(game.instance_variable_get(:@board)).to receive(:puts)
+  describe '#result' do
+    context 'when player 1 has completed a line' do
+      it "announces player 1's victory" do
+        name = 'Rufus'
+        allow(game.p1).to receive(:name).and_return(name)
+        game.instance_variable_set(:@active_player, game.p1)
+        winner = game.active_player
+        win_announcement = "#{winner.name} won the match!\n"
 
-      expect(game).to receive(:player_turn).and_call_original.exactly(7).times
-      game.loop_turns
+        expect { game.result }.to output(win_announcement).to_stdout
+      end
+    end
+
+    context 'when no line was completed (game is over because board is full)' do
+      it 'announces the draw' do
+        board = game.instance_variable_get(:@board)
+        allow(board).to receive(:full_board?).and_return(true)
+        draw_announcement = "The board is full. This match has came to a draw\n"
+        expect { game.result }.to output(draw_announcement).to_stdout
+      end
     end
   end
 end
