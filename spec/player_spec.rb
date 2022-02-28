@@ -33,6 +33,7 @@ describe Player do
   end
 
   describe '#turn_input' do
+    let(:board) { double('board', slots: Array(1..42)) }
     context 'when a player enters a valid input' do
       # it is necessary to provide valid_input as a string the, since it's what
       # the method's gets expects, and then at the end to expect the same valid
@@ -43,7 +44,7 @@ describe Player do
         allow(player).to receive(:puts)
       end
       it 'returns the valid input' do
-        result = player.turn_input
+        result = player.turn_input(board)
         expect(result).to eq(valid_input.to_i)
       end
     end
@@ -56,12 +57,12 @@ describe Player do
         allow($stdout).to receive(:puts)
       end
       it 'outputs the invalid input warning' do
-        warning = /#{invalid_input} isn't a valid input. Choose a column between 1 and 7.\n/
-        expect { player.turn_input }.to output(warning).to_stdout
+        warning = /#{invalid_input} isn't a valid input. Choose an available column between 1 and 7.\n/
+        expect { player.turn_input(board) }.to output(warning).to_stdout
       end
 
       it 'then returns the valid input' do
-        result = player.turn_input
+        result = player.turn_input(board)
         expect(result).to eq(valid_input.to_i)
       end
     end

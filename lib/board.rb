@@ -23,6 +23,7 @@ class Board
       bottom = @slots[column_index + (line_multiplier * 7)]
       return @slots.index(bottom) if bottom.instance_of?(Integer)
     end
+    column_index
   end
 
   def game_over?

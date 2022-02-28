@@ -39,7 +39,7 @@ module Display
   def display_turn_warn(invalid_input)
     return 'Choose a column between 1 and 7.' if invalid_input.zero?
 
-    "#{invalid_input} isn't a valid input. Choose a column between 1 and 7."
+    "#{invalid_input} isn't a valid input. Choose an available column between 1 and 7."
   end
 
   def display_win(winner)

@@ -21,12 +21,14 @@ class Player
     end
   end
 
-  def turn_input
+  def turn_input(board)
     puts display_turn_prompt(name)
     loop do
       player_input = gets.chomp.to_i
-      return player_input if player_input >= 1 && player_input <= 7
-
+      if player_input >= 1 && player_input <= 7 && board.slots[player_input - 1]
+                                                        .instance_of?(Integer)
+        return player_input
+      end
       puts display_turn_warn(player_input)
     end
   end

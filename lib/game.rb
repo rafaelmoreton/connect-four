@@ -46,7 +46,7 @@ class Game
   end
 
   def player_turn
-    target = @active_player.turn_input
+    target = @active_player.turn_input(@board)
     @board.drop_piece(target, @active_player.piece)
   end
 
