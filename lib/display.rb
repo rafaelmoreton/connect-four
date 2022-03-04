@@ -50,4 +50,12 @@ module Display
   def display_draw
     puts 'The board is full. This match has came to a draw'
   end
+
+  def display_another_match
+    puts <<~REMATCH
+      Do you want to play another match?
+      [1] - Play
+      [2] - Exit
+    REMATCH
+  end
 end
